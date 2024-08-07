@@ -1,0 +1,19 @@
+@import "@/scss/mixins";
+
+.header-your-ticket {
+  padding: 8px;
+  height: 64px;
+  margin: 0px -24px;
+  position: relative;
+  box-sizing: border-box;
+  background-color: var(--foreground);
+  @include flex(center, center);
+  .typography {
+    font-size: 18px !important;
+  }
+  .close-icon {
+    cursor: pointer;
+    right: 16px;
+    position: absolute;
+  }
+}

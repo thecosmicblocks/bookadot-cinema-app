@@ -1,0 +1,7 @@
+@import "@/scss/pallete";
+@import "@/scss/mixins";
+
+header {
+  padding: 8px 0px;
+  @include flex(space-between, center);
+}

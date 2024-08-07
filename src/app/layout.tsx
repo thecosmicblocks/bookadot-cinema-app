@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import WagmiContextWrapper from "../context/WagmiContextWrapper";
+import { cookieToInitialState } from "wagmi";
+import { config } from "../context/WagmiContextWrapper/config";
+import { headers } from "next/headers";
+import ReactQueryWrapper from "../context/ReactQueryWrapper";
+import "@/scss/global.scss";
+import AntdThemeWrapper from "@/context/AntdTheme";
 
-const inter = Inter({ subsets: ["latin"] });
+export const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-family",
+  weight: ["400", "500", "600", "700", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,9 +25,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialState = cookieToInitialState(config, headers().get("cookie"));
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.variable}>
+        <AntdRegistry>
+          <AntdThemeWrapper>
+            <WagmiContextWrapper initialState={initialState}>
+              <ReactQueryWrapper>{children}</ReactQueryWrapper>
+            </WagmiContextWrapper>
+          </AntdThemeWrapper>
+        </AntdRegistry>
+      </body>
     </html>
   );
 }

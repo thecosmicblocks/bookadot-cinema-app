@@ -1,0 +1,37 @@
+@import "./pallete";
+
+html {
+  --bg-main: #{$bg-main};
+  --bg-dark: #{$bg-dark};
+  --foreground: #{$foreground};
+  --primary-color: #{$primary-color};
+  --primary-color-sub: #{$primary-color-sub};
+  --secondary-color: #{$secondary-color};
+  --secondary-dark: #{$secondary-dark};
+  --border: #{$border};
+}
+
+html * {
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--bg-dark);
+  margin-top: 0px;
+  //   margin: 0px;
+}
+
+@for $i from 0 through 100 {
+  .mt-#{$i} {
+    margin-top: #{$i / 4}rem !important;
+  }
+  .mr-#{$i} {
+    margin-right: #{$i / 4}rem !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: #{$i / 4}rem !important;
+  }
+  .ml-#{$i} {
+    margin-left: #{$i / 4}rem !important;
+  }
+}

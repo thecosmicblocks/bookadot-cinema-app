@@ -1,0 +1,55 @@
+.session-booking {
+  .screen-text {
+    font-size: 0.875rem !important;
+    color: var(--primary-color-sub) !important;
+  }
+  .date-section {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    height: 40px;
+    box-sizing: border-box;
+    .typography {
+      font-size: 0.875rem !important;
+      font-weight: 700 !important;
+      margin-left: 4px;
+    }
+  }
+
+  .circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    &.available {
+      background-color: var(--border);
+    }
+
+    &.chosen {
+      background-color: var(--secondary-color);
+    }
+  }
+
+  .seat-category {
+    .typography {
+      font-weight: 500 !important;
+      font-size: 0.75rem !important;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.order-btn-section {
+  position: fixed;
+  height: 80px;
+  padding: 8px 16px 16px 16px;
+  box-sizing: border-box;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  margin: auto;
+  background-color: var(--bg-dark);
+  z-index: 1;
+  .ant-btn {
+    width: 100%;
+  }
+}

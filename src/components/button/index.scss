@@ -1,0 +1,15 @@
+.custom-button {
+  &:hover {
+    opacity: 0.8;
+  }
+  &.ant-btn-link {
+    border: 1px solid var(--border);
+    color: var(--primary-color) !important;
+
+    &:hover {
+      background-color: var(--secondary-color) !important;
+      opacity: 1;
+      border: none;
+    }
+  }
+}
