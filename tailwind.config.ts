@@ -1,23 +1,42 @@
+import flowbite from "flowbite-react/tailwind";
 import type { Config } from "tailwindcss";
-const withMT = require("@material-tailwind/react/utils/withMT");
 
-const config: Config = withMT({
+const config: Config = {
   content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    flowbite.content(),
   ],
   theme: {
     extend: {
-      colors: {
-        'primary': "#D45161",
-        'dark': '#222222',
+      fontFamily: {
+        inter: ["var(--font-inter)"],
       },
-      boxShadow: {
-        'primary': '0px 4px 16px 0px rgba(255, 128, 54, 0.25)',
-      }
-    }
+      colors: {
+        "background-color": "var(--background-color)",
+        "foreground-color": "var(--foreground-color)",
+        "accent-color": "var(--accent-color)",
+        "text-primary-color": "var(--text-primary-color)",
+        "text-secondary-color": "var(--text-secondary-color)",
+        "button-primary-color": "var(--button-primary-color)",
+        "border-color": "var(--border-color)",
+        "header-border-color": "var(--header-border-color)",
+      },
+      fontSize: {
+        normal: ["1.25rem", "2rem"],
+        header: ["2.5rem", "3rem"],
+        sub: ["0.9375rem", "1.125rem"],
+      },
+      backgroundColor: {
+        hoverBg: "var(--hover-bg)",
+      },
+      minHeight: {
+        main: "calc(100dvh - 75px - 370px)",
+      },
+    },
   },
-  plugins: [],
-});
+  plugins: [flowbite.plugin()],
+};
 
 export default config;
