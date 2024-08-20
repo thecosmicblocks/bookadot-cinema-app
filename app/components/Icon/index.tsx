@@ -2,7 +2,6 @@ export { default as Logo } from "./logo.svg";
 export { default as Search } from "./search.svg";
 export { default as Back } from "./back.svg";
 export { default as Play } from "./play.svg";
-
 export { default as DoubleArrow } from "./double-arrow.svg";
 export { default as Calendar } from "./calendar.svg";
 export { default as Fullscreen } from "./full-screen.svg";
@@ -16,3 +15,5 @@ export { default as Loading } from "./loading.svg";
 export { default as Mark } from "./mark.svg";
 export { default as ArrowUp } from "./arrow-up.svg";
 export { default as ArrowDown } from "./arrow-down.svg";
+export { default as ArrowLeft } from "./arrow-left.svg";
+export { default as NotFound } from "./not-found.svg";

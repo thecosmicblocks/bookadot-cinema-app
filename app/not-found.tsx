@@ -8,7 +8,7 @@ const NotFoundPage = () => {
   const router = useRouter();
   return (
     <section className="min-h-main flex flex-col items-center">
-      <div className="my-20 flex w-[700px] flex-col">
+      <div className="my-20 flex flex-col">
         <NotFound />
         <Typography component="h1" className="mb-3 mt-5 text-header font-bold">
           Opps! Page not found.

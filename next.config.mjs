@@ -40,6 +40,12 @@ const nextConfig = {
     fileLoaderRule.exclude = /\.svg$/i;
     return config;
   },
+
+  images: {
+    remotePatterns: [{
+        hostname: '*'
+    }]
+  }
 };
 
 export default nextConfig;
