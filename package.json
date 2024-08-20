@@ -1,7 +1,11 @@
 {
-  "name": "bookadot-fe",
-  "version": "0.1.0",
+  "name": "@thecosmicblocks/bookadot-cinema-app",
+  "version": "1.0.0",
   "private": true,
+  "author": {
+    "name": "The Cosmic Blocks",
+    "email": "hello@thecosmicblock.com"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,33 +13,22 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/nextjs-registry": "^1.0.0",
-    "@tanstack/react-query": "^5.51.18",
-    "antd": "^5.19.3",
-    "axios": "^1.7.2",
-    "dayjs": "^1.11.12",
-    "js-cookie": "^3.0.5",
-    "next": "14.2.5",
-    "react": "^18",
-    "react-dom": "^18",
-    "viem": "^2.18.7",
-    "wagmi": "^2.12.2"
+    "@heroicons/react": "2.0.18",
+    "@material-tailwind/react": "2.1.8",
+    "classnames": "^2.5.1",
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@svgr/webpack": "^8.1.0",
-    "@types/js-cookie": "^3.0.6",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "bufferutil": "^4.0.8",
-    "encoding": "^0.1.13",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.5",
-    "lokijs": "^1.5.12",
-    "pino-pretty": "^11.2.2",
-    "sass": "^1.77.8",
-    "supports-color": "^8.1.1",
-    "typescript": "^5",
-    "utf-8-validate": "^5.0.10"
+    "@types/node": "^22.4.1",
+    "@types/react": "18.2.42",
+    "@types/react-dom": "18",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.0",
+    "eslint-config-next": "^14.2.5",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.4.10",
+    "typescript": "5.5.4"
   }
 }
