@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Button } from "flowbite-react";
+import { Badge } from "flowbite-react";
 import Typography from "../Typography";
 import Link from "next/link";
 import Image from "next/image";

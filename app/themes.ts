@@ -120,7 +120,7 @@ export const themes: CustomFlowbiteTheme = {
   },
   navbar: {
     root: {
-      base: "bg-white p-4 bg-transparent",
+      base: "bg-white bg-transparent",
       rounded: {
         on: "rounded",
         off: "",
@@ -707,5 +707,5 @@ export const themes: CustomFlowbiteTheme = {
         "sm": "h-3.5 w-3.5"
       }
     }
-  }
+  },
 };

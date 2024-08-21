@@ -17,3 +17,4 @@ export { default as ArrowUp } from "./arrow-up.svg";
 export { default as ArrowDown } from "./arrow-down.svg";
 export { default as ArrowLeft } from "./arrow-left.svg";
 export { default as NotFound } from "./not-found.svg";
+export { default as Filter } from "./filter.svg";

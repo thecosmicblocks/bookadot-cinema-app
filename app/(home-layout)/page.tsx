@@ -1,9 +1,9 @@
 "use client";
 
 import { Children } from "react";
-import { FilmCard } from "./components/FilmCard";
-import { Search } from "./components/Icon";
-import Typography from "./components/Typography";
+import { FilmCard } from "@app/components/FilmCard";
+import { Filter, Search } from "@app/components/Icon";
+import Typography from "@app/components/Typography";
 
 const FILMS = [
     {
@@ -41,7 +41,7 @@ export default function Home() {
             <Typography component="h2" className="text-2xl font-bold">Now in cinemas</Typography>
 
             <span className="cursor-pointer">
-                <Search/>
+                <Filter />
             </span>
         </div>
 
