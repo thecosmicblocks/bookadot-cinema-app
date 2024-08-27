@@ -1,11 +1,11 @@
 "use client";
 
 import { ReactNode, createContext, useCallback, useContext, useState } from "react";
-import { IFilm } from "../interfaces/Film";
+import { PartialFilm } from "../interfaces/Film";
 
 type FilmContextType = {
-    detailFilmData: IFilm | undefined;
-    setDetailFilmData: (data: IFilm) => void;
+    detailFilmData: PartialFilm | undefined;
+    setDetailFilmData: (data: PartialFilm) => void;
 };
 
 const FilmContext = createContext<FilmContextType>({
@@ -14,8 +14,8 @@ const FilmContext = createContext<FilmContextType>({
 });
 
 export function FilmContextProvider({ children }: Readonly<{ children: ReactNode }>) {
-    const [detailFilmData, setGlobalDetailFilmData] = useState<IFilm>();
-    const setDetailFilmData = useCallback((data: IFilm) => setGlobalDetailFilmData(data), [])
+    const [detailFilmData, setGlobalDetailFilmData] = useState<PartialFilm>();
+    const setDetailFilmData = useCallback((data: PartialFilm) => setGlobalDetailFilmData(data), [])
   
     return (
         <FilmContext.Provider value={{

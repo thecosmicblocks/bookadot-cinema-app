@@ -9,6 +9,7 @@ const FILMS = [
     {
       id: "1",
       name: "Lật mặt 6",
+      code: 'lat-mat-6',
       image:
         "https://image.bnews.vn/MediaUpload/Org/2023/04/24/lm6-2x3-layout-20230424144523.jpg",
       category: "Action",
@@ -17,6 +18,7 @@ const FILMS = [
     {
       id: "2",
       name: "Lật mặt 6",
+      code: 'lat-mat-6',
       image:
         "https://image.bnews.vn/MediaUpload/Org/2023/04/24/lm6-2x3-layout-20230424144523.jpg",
       category: "Adventure",
@@ -25,6 +27,7 @@ const FILMS = [
     {
       id: "3",
       name: "Lật mặt 6",
+      code: 'lat-mat-6',
       image:
         "https://image.bnews.vn/MediaUpload/Org/2023/04/24/lm6-2x3-layout-20230424144523.jpg",
       category: "Adventure",

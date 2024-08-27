@@ -1,6 +1,6 @@
 import { Footer } from "flowbite-react";
 import { BsDiscord, BsGithub, BsTwitter } from "react-icons/bs";
-import { Container } from "../components/Container/Container";
+import { Container } from "../Container";
 
 export function TCBFooter() {
   return (
