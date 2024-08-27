@@ -1,5 +1,5 @@
 import { Navbar } from "flowbite-react";
-import { Logo, Search } from "./Icon";
+import { Logo, Search } from "../Icon";
 
 export const HomeHeader = () => {
 

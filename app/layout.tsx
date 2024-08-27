@@ -2,9 +2,9 @@ import "./globals.css";
 import { themes } from "@app/themes";
 import { Flowbite, ThemeModeScript } from "flowbite-react";
 import type { Metadata } from "next";
-import { TCBFooter } from "@app/components/Footer";
+import { TCBFooter } from "@/app/components/Footer";
 import { Inter } from "next/font/google";
-import { Container } from "./components/Container/Container";
+import { Container } from "./components/Container";
 import { Suspense } from "react";
 import { FilmContextProvider } from "./context/FilmContext";
 
@@ -32,7 +32,7 @@ export default function RootLayout({
             <body className={"bookadot-body flex w-full flex-col items-center"}>
                 <Flowbite theme={{ mode: "dark", theme: themes }}>
                     <Container className={`min-h-[70vh] w-full`}>
-                        <main className="p-4 min-h-screen">
+                        <main className="min-h-screen">
                             <Suspense fallback="Loading ...">
                                 <FilmContextProvider>
                                     {children}

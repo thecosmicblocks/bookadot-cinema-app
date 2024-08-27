@@ -4,35 +4,30 @@ import { Badge } from "flowbite-react";
 import Typography from "../Typography";
 import Link from "next/link";
 import Image from "next/image";
+import { PartialFilm } from "@/app/interfaces/Film";
 
-interface IFilmCard {
-  id: string;
-  name: string;
-  category: string;
-  point: number;
-  image: string;
-}
-
-export const FilmCard = ({ id, name, category, image, point }: IFilmCard) => {
+export const FilmCard = ({ code, name, category, image, point }: PartialFilm) => {
+    console.log(code);
+    
   return (
-    <Link href={`/film/${id}`}>
+    <Link href={`/film/${code}`}>
       <div className="w-full flex flex-col relative">
         <Badge size="sm" className="absolute top-1 right-1 z-10" color="bookadot-primary">
-            {point}
+            {point || "0.0"}
         </Badge>
         <Image
-            src={image}
-            alt={name}
+            src={image || "#"}
+            alt={name || "film"}
             width={100}
             height={250}
             className="rounded-lg w-full aspect-[0.713]"    
         />
         <div className="mt-1">
           <Typography component="p" className="font-bold">
-            {name}
+            {name || ""}
           </Typography>
           <Typography component="p" className="text-sm mt-1 text-gray-500">
-            {category}
+            {category || ""}
           </Typography>
         </div>
       </div>

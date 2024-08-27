@@ -1,7 +1,10 @@
 export interface IFilm {
-    id?: string;
-    name?: string;
-    image?: string;
-    category?: string;
-    point?: number;
+    id: string;
+    code: string;
+    name: string;
+    image: string;
+    category: string;
+    point: number;
 }
+
+export type PartialFilm = Partial<IFilm>;
