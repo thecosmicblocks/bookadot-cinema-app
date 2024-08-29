@@ -1,10 +1,23 @@
 export interface IFilm {
-    id: string;
-    code: string;
-    name: string;
-    image: string;
-    category: string;
-    point: number;
+    name: string
+    code: string
+    description: string
+    trailer: Trailer
+    filmAttributes: IFilmAttributes
+}
+
+export interface Trailer {
+    url: string
+    type: string
+}
+
+export interface IFilmAttributes {
+    certificate: string
+    runtime: string
+    release: string
+    genre: string
+    director: string
+    cast: string
 }
 
 export type PartialFilm = Partial<IFilm>;

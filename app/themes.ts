@@ -660,7 +660,7 @@ export const themes: CustomFlowbiteTheme = {
           teal: "bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4",
           info: "border-cyan-600 bg-cyan-600",
           pink: "border-pink-600 bg-pink-600",
-          bookadot: "bg-accent-color border-none",
+          bookadot_primary: "bg-accent-color border-none",
         },
       },
       sizes: {
