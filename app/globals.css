@@ -37,3 +37,8 @@ body {
 a {
   color: var(--accent-color);
 }
+
+*[disabled] {
+  cursor: not-allowed;
+  opacity: 0.3;
+}

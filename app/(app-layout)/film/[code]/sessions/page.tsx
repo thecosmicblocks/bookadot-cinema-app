@@ -1,6 +1,7 @@
 "use client"
 
-import { Calendar, DoubleArrow } from "@/app/components/Icon"
+import DatePicker from "@/app/components/DatePicker"
+import { DoubleArrow } from "@/app/components/Icon"
 import SessionTable from "@/app/components/SessionTable"
 import Typography from "@/app/components/Typography"
 import dayjs from "dayjs"
@@ -9,22 +10,30 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
 
 
-const FILM_DATA = [
+const SESSION_DATA = [
     {
+        id: 1,
         time: '10:00 AM',
         roomType: "IMAX",
         adult: 3500,
         child: 2200,
         student: 1540,
-        vip: 0
+        vip: 0,
+        cinemaName: 'Cinema 1',
+        cinemaAddress: '1234 Street, City, Country',
+        cinema_id: 1
     },
     {
+        id: 2,
         time: '10:00 AM',
         roomType: "IMAX",
         adult: 3500,
         child: 2200,
         student: 1540,
-        vip: 0
+        vip: 0,
+        cinemaName: 'Cinema 2',
+        cinemaAddress: '1234 Street, City, Country',
+        cinema_id: 2
     },
 ]
 
@@ -33,15 +42,17 @@ const GROUPED_BY_CINEMA = [
         cinemaName: 'Cinema 1',
         cinemaAddress: '1234 Street, City, Country',
         cinemaDistance: '1.2 km',
-        filmList: FILM_DATA
+        sessionList: SESSION_DATA
     },
     {
         cinemaName: 'Cinema 2',
         cinemaAddress: '1234 Street, City, Country',
         cinemaDistance: '1.5 km',
-        filmList: FILM_DATA
+        sessionList: SESSION_DATA
     }
 ]
+
+const DATE_FORMAT_PATTERN = 'YYYY-MM-DD'
 
 function Sessions() {
     const searchParam = useSearchParams()
@@ -54,10 +65,11 @@ function Sessions() {
     const isGroupedByCinema = searchParam.get('group_by') === 'cinema' ? true : false
     const [sortParams, setSortParams] = useState({
         isTimeDesc: isSortedByTimeDesc,
-        isGroupedByCinema: isGroupedByCinema
+        isGroupedByCinema: isGroupedByCinema,
+        date: dayjs().format(DATE_FORMAT_PATTERN)
     })
 
-    const filmList = sortParams.isGroupedByCinema ? GROUPED_BY_CINEMA : FILM_DATA
+    const sessionList = sortParams.isGroupedByCinema ? GROUPED_BY_CINEMA : SESSION_DATA
 
     const onSortedByTime = useCallback(() => {
         const _isTimeDesc = !sortParams.isTimeDesc
@@ -75,15 +87,21 @@ function Sessions() {
         router.push(`${pathname}?${params.toString()}`);
     }, [sortParams.isGroupedByCinema])
 
+    const onFilterByDate = useCallback((date: Date) => {
+        const _date = dayjs(date).format(DATE_FORMAT_PATTERN)
+        setSortParams(prev => ({ ...prev, date: _date }))
+        params.set("date", _date);        
+        router.push(`${pathname}?${params.toString()}`);
+    }, [sortParams.date])
+
     return (
         <>
             <div className="flex py-4">
-                <div className="flex flex-col items-center w-1/3">
-                    <Calendar />
-                    <Typography
-                        component="p"
-                        className="text-sm font-bold pt-1"
-                    >{dayjs().format('MMM, DD')}</Typography>
+                <div className="flex flex-col items-center w-1/3 relative">
+                    <DatePicker 
+                        onSelectedDateChanged={onFilterByDate}
+                        value={sortParams.date}
+                    />
                 </div>
 
                 <div
@@ -117,7 +135,7 @@ function Sessions() {
 
             <SessionTable
                 isGroupedByCinema={sortParams.isGroupedByCinema}
-                filmList={filmList}
+                sessionList={sessionList}
             />
         </>
     )

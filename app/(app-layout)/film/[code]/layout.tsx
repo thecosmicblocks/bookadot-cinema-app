@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
 import { ReactNode } from "react"
 import classnames from 'classnames'
+import classNames from "classnames";
 
 function FilmLayout({ children }: Readonly<{ children: ReactNode }>) {    
     const pathname = usePathname()
@@ -14,10 +15,13 @@ function FilmLayout({ children }: Readonly<{ children: ReactNode }>) {
     const tabActiveClassName =  (condition: boolean) => condition
     ? "text-accent-color border-accent-color"
     : "!text-text-secondary-color"
-    
+
+    const EXCEPTION_ROUTE = [/^\/film\/[a-zA-Z0-9\-]+\/sessions\/[a-zA-Z0-9\-]+$/g]
+    const isExceptionRoute = EXCEPTION_ROUTE.some((route) => route.test(pathname))
+
     return (
         <>
-            <div className="w-full flex">
+            <div className={classNames("w-full flex", {'hidden': isExceptionRoute })}>
                 <Link
                     href={`/film/${param.code}`}
                     className={'w-1/2'}

@@ -2,14 +2,28 @@ import { Children } from "react";
 import { List } from "flowbite-react";
 import Typography from "../Typography";
 import { Mark } from "../Icon";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useFilmContext } from "@/app/context/FilmContext";
 
 function SessionTable({
-    filmList,
+    sessionList,
     isGroupedByCinema
 }: {
-    filmList: any[],
+    sessionList: any[],
     isGroupedByCinema: boolean
 }) {
+    const searchParam = useSearchParams()
+    const params = new URLSearchParams(searchParam.toString())
+    const router = useRouter()
+    const filmContext = useFilmContext()
+
+    const onSelectSession = (sessionData: any) => {
+        filmContext.setFilmPageSetting({
+            subtitle: sessionData.cinemaName as string
+        })
+        router.push(`sessions/${sessionData.id}?${params.toString()}`);
+    }
+
     return (
         <List unstyled className="w-full">
             <List.Item>
@@ -25,18 +39,18 @@ function SessionTable({
 
 
             {Children.toArray(
-                filmList.map((filmOrCinema) => (
+                sessionList.map((filmOrCinema) => (
                     isGroupedByCinema ? (
                         <>
                             <CinemaRow cinemaData={filmOrCinema} />
                             {
-                                filmOrCinema.filmList.map((filmData: any) => (
-                                    <SessionRow filmData={filmData} />
+                                filmOrCinema.sessionList.map((sessionData: any) => (
+                                    <SessionRow sessionData={sessionData} onSelectSession={onSelectSession}/>
                                 ))
                             }
                         </>
                     ) : (
-                        <SessionRow filmData={filmOrCinema} />
+                        <SessionRow sessionData={filmOrCinema} onSelectSession={onSelectSession} />
                     )
                 ))
             )}
@@ -60,42 +74,44 @@ function CinemaRow({ cinemaData }: { cinemaData: any }) {
         </List.Item>
     )
 }
-function SessionRow({ filmData }: { filmData: any }) {
-
-    const TicketPrice = ({ price }: any) => {
-        return (
-            <div className="flex items-center gap-1">
-                <Typography component="p" className="text-sm">
-                    {price ? `$${price}` : "."}
-                </Typography>
-            </div>
-        )
-    }
-
+function SessionRow({ sessionData, onSelectSession }: { sessionData: any, onSelectSession: any }) {
     return (
-        <List.Item className="flex items-center border-b-2 border-b-border-color p-4">
+        <List.Item
+            className="flex items-center border-b-2 border-b-border-color p-4 cursor-pointer"
+            onClick={() => onSelectSession(sessionData)}
+        >
             <div className="w-1/4">
                 <Typography component="p" className="text-lg font-bold text-center">
-                    {filmData.time}
+                    {sessionData.time}
                 </Typography>
                 <Typography component="p" className="text-sm font-medium text-text-secondary-color text-center">
-                    {filmData.roomType}
+                    {sessionData.roomType}
                 </Typography>
             </div>
             <hr className="rotate-90 w-10 bg-border-color mx-1" />
             <div className="w-1/6">
-                <TicketPrice price={filmData.adult} />
+                <TicketPrice price={sessionData.adult} />
             </div>
             <div className="w-1/6">
-                <TicketPrice price={filmData.child} />
+                <TicketPrice price={sessionData.child} />
             </div>
             <div className="w-1/6">
-                <TicketPrice price={filmData.student} />
+                <TicketPrice price={sessionData.student} />
             </div>
             <div className="w-1/6">
-                <TicketPrice price={filmData.vip} />
+                <TicketPrice price={sessionData.vip} />
             </div>
         </List.Item>
+    )
+}
+
+const TicketPrice = ({ price }: any) => {
+    return (
+        <div className="flex items-center gap-1">
+            <Typography component="p" className="text-sm">
+                {price ? `$${price}` : "."}
+            </Typography>
+        </div>
     )
 }
 

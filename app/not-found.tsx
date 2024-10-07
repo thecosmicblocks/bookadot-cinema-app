@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const NotFoundPage = () => {
   const router = useRouter();
   return (
-    <section className="min-h-main flex flex-col items-center">
+    <section className="min-h-main flex flex-col items-center px-4">
       <div className="my-20 flex flex-col">
         <NotFound />
         <Typography component="h1" className="mb-3 mt-5 text-header font-bold">

@@ -4,82 +4,42 @@ import {
   Datepicker as FlowbiteDatePicker,
 } from "flowbite-react";
 import { Calendar } from "../Icon";
+import Typography from "../Typography";
+import dayjs from "dayjs";
+import classNames from "classnames";
+import { useState } from "react";
 
-interface IDatePickerProps extends DatepickerProps {}
+interface IDatePickerProps extends DatepickerProps {
+}
 
-function Datepicker({ ...rest }: IDatePickerProps) {
-  return (
-    <FlowbiteDatePicker
-      datepicker-format="mm/dd/yyyy"
-      rightIcon={(props) => <Calendar {...props} />}
-      className="w-[160px] [&_input]:!bg-foreground-color  [&_input]:!ring-accent-color"
-      //
-      theme={{
-        popup: {
-          root: {
-            base: "absolute z-[1] mt-2 w-[272px] rounded-[8px] bg-foreground-color p-1",
-            inline: "bg-foreground-color",
-            inner: "bg-foreground-color",
-          },
-          footer: {
-            base: "hidden",
-          },
-          header: {
-            selectors: {
-              button: {
-                next: "!bg-foreground-color shadow-[transparent!important] hover:!bg-accent-color",
-                prev: "!bg-foreground-color shadow-[transparent!important] hover:!bg-accent-color",
-                view: "!bg-foreground-color shadow-[transparent!important] hover:!bg-accent-color",
-              },
-            },
-          },
-        },
-        root: {
-          input: {
-            field: {
-              input: {
-                base: "h-[46px] w-full !rounded-[15px] !border-none !pl-3",
-              },
-              icon: {
-                svg: "hidden",
-              },
-            },
-          },
-        },
-        views: {
-          days: {
-            items: {
-              item: {
-                selected: "bg-accent-color",
-              },
-            },
-          },
-          months: {
-            items: {
-              item: {
-                selected: "bg-accent-color",
-              },
-            },
-          },
-          years: {
-            items: {
-              item: {
-                selected: "bg-accent-color",
-              },
-            },
-          },
-          decades: {
-            items: {
-              item: {
-                selected: "bg-accent-color",
-              },
-            },
-          },
-        },
-      }}
-      {...rest}
-    />
+function DatePicker({ ...rest }: IDatePickerProps) {
+    const [isOpenCalendar, setIsOpenCalendar] = useState(false)
+
+    return (
+        <>
+            <FlowbiteDatePicker
+                className={classNames("absolute left-0 z-10", { 'hidden': !isOpenCalendar })}
+                weekStart={1}
+                minDate={dayjs().subtract(1, 'd').toDate()}
+                maxDate={dayjs().add(1, 'd').toDate()}
+                inline
+                showTodayButton={false}
+                showClearButton={false}
+                {...rest}
+                onSelectedDateChanged={(date) => {
+                    rest.onSelectedDateChanged?.(date)
+                    setIsOpenCalendar(false)
+                }}                
+            />
+            <div onClick={() => setIsOpenCalendar(prev => !prev)} className="cursor-pointer flex flex-col items-center">
+                <Calendar />
+                <Typography
+                    component="p"
+                    className="text-sm font-bold pt-1"
+                >{dayjs(rest.value as any || new Date()).format('MMM, DD')}</Typography>
+            </div>
+        </>
   );
 }
 
-export default Datepicker;
+export default DatePicker;

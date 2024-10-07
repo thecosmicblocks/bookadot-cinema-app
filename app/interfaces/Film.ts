@@ -1,9 +1,13 @@
 export interface IFilm {
+    id: string    
     name: string
     code: string
     description: string
     trailer: Trailer
     filmAttributes: IFilmAttributes
+    image: string
+    category: string
+    point: number | string
 }
 
 export interface Trailer {

@@ -21,12 +21,18 @@ export default function AppLayout({
             category: "Action",
             point: 8.1,
         })
+        if (filmContext.filmPageSetting.title === "") {
+            filmContext.setFilmPageSetting({
+                title: "Lật mặt 6",
+                subtitle: ""
+            })
+        }
     }, [])
 
     return (
         <>
             <AppHeader 
-                title={filmContext.detailFilmData?.name || ""}
+                config={filmContext.filmPageSetting}
                 className="mb-1 p-4"
             />
             {children}
