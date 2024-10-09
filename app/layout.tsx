@@ -7,6 +7,7 @@ import { Inter } from "next/font/google";
 import { Container } from "./components/Container";
 import { Suspense } from "react";
 import { FilmContextProvider } from "./context/FilmContext";
+import { BookingContextProvider } from "./context/BookingContext";
 
 const fontIter = Inter({
     subsets: ["latin"],
@@ -28,14 +29,17 @@ export default function RootLayout({
             <head>
                 <ThemeModeScript />
                 <title>Bookadot</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0" />
             </head>
             <body className={"bookadot-body flex w-full flex-col items-center"}>
                 <Flowbite theme={{ mode: "dark", theme: themes }}>
-                    <Container className={`min-h-[70vh] w-full`}>
-                        <main className="min-h-screen">
+                    <Container className={`min-h-[50vh] w-full`}>
+                        <main className="min-h-screen relative">
                             <Suspense fallback="Loading ...">
                                 <FilmContextProvider>
-                                    {children}
+                                    <BookingContextProvider>
+                                        {children}
+                                    </BookingContextProvider>
                                 </FilmContextProvider>
                             </Suspense>
                         </main>

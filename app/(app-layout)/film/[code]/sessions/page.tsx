@@ -1,9 +1,12 @@
 "use client"
 
+import { AppHeader } from "@/app/components/AppHeader"
 import DatePicker from "@/app/components/DatePicker"
+import FilmTab from "@/app/components/FilmTab"
 import { DoubleArrow } from "@/app/components/Icon"
 import SessionTable from "@/app/components/SessionTable"
 import Typography from "@/app/components/Typography"
+import { useFilmContext } from "@/app/context/FilmContext"
 import dayjs from "dayjs"
 import { ToggleSwitch } from "flowbite-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -19,9 +22,11 @@ const SESSION_DATA = [
         child: 2200,
         student: 1540,
         vip: 0,
-        cinemaName: 'Cinema 1',
-        cinemaAddress: '1234 Street, City, Country',
-        cinema_id: 1
+        cinema_name: 'Cinema 1',
+        cinema_address: '1234 Street, City, Country',
+        cinema_id: 1,
+        cinema_hall: 'Hall 1',
+        date: '6 April 2022, 14:40'
     },
     {
         id: 2,
@@ -31,23 +36,25 @@ const SESSION_DATA = [
         child: 2200,
         student: 1540,
         vip: 0,
-        cinemaName: 'Cinema 2',
-        cinemaAddress: '1234 Street, City, Country',
-        cinema_id: 2
+        cinema_name: 'Cinema 2',
+        cinema_address: '1234 Street, City, Country',
+        cinema_id: 2,
+        cinema_hall: '2nd',
+        date: '6 April 2022, 14:40'
     },
 ]
 
 const GROUPED_BY_CINEMA = [
     {
-        cinemaName: 'Cinema 1',
-        cinemaAddress: '1234 Street, City, Country',
-        cinemaDistance: '1.2 km',
+        cinema_name: 'Cinema 1',
+        cinema_address: '1234 Street, City, Country',
+        cinema_distance: '1.2 km',
         sessionList: SESSION_DATA
     },
     {
-        cinemaName: 'Cinema 2',
-        cinemaAddress: '1234 Street, City, Country',
-        cinemaDistance: '1.5 km',
+        cinema_name: 'Cinema 2',
+        cinema_address: '1234 Street, City, Country',
+        cinema_distance: '1.5 km',
         sessionList: SESSION_DATA
     }
 ]
@@ -60,6 +67,7 @@ function Sessions() {
     const pathname = usePathname()
     const params = new URLSearchParams(searchParam.toString())
 
+    const { detailFilmData: filmData } = useFilmContext()
 
     const isSortedByTimeDesc = searchParam.get('time') === 'asc' ? false : true
     const isGroupedByCinema = searchParam.get('group_by') === 'cinema' ? true : false
@@ -96,6 +104,13 @@ function Sessions() {
 
     return (
         <>
+            <AppHeader 
+                config={{
+                    title: filmData?.name || "Film"
+                }}
+            />
+            <FilmTab />
+
             <div className="flex py-4">
                 <div className="flex flex-col items-center w-1/3 relative">
                     <DatePicker 

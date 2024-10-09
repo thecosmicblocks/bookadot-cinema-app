@@ -1,14 +1,17 @@
+'use client'
+
 import { ReactNode } from "react";
 import Link from "next/link";
 import { Navbar } from "flowbite-react";
 import { Back } from "@app/components/Icon";
 import { usePathname } from "next/navigation";
 import Typography from "../Typography";
+import classNames from "classnames";
 
 interface IAppHeaderProps {
     config: {
         title: string;
-        subtitle: string;
+        subtitle?: string;
     };
     rightIcon?: ReactNode;
     className?: string;
@@ -19,11 +22,8 @@ export function AppHeader({ config, rightIcon, className }: IAppHeaderProps) {
     const finalSlashIndex = pathname.lastIndexOf('/')
     const previousPath = pathname.slice(0, finalSlashIndex)
 
-    const ENABLE_SUBTITLE_ROUTE = [/^\/film\/[a-zA-Z0-9\-]+\/sessions\/[a-zA-Z0-9\-]+$/g]
-    const isEnableSubtitle = ENABLE_SUBTITLE_ROUTE.some((route) => route.test(pathname))
-
     return (
-        <Navbar fluid rounded className={className}>
+        <Navbar fluid rounded className={classNames("mb-1 p-4", className)}>
             <div className="flex justify-between items-center w-full">
                 <Link href={previousPath} className="cursor-pointer">
                     <Back />
@@ -31,7 +31,7 @@ export function AppHeader({ config, rightIcon, className }: IAppHeaderProps) {
                 <div className="text-center">
                     <Typography component="p" className="text-lg font-bold">{config.title}</Typography>
                     {
-                        isEnableSubtitle && (
+                        config.subtitle && (
                             <Typography component="p" className="text-sm font-normal text-opacity-40">{config.subtitle}</Typography>
                         )
                     }

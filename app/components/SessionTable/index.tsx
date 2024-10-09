@@ -3,7 +3,7 @@ import { List } from "flowbite-react";
 import Typography from "../Typography";
 import { Mark } from "../Icon";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useFilmContext } from "@/app/context/FilmContext";
+import { useBookingContext } from "@/app/context/BookingContext";
 
 function SessionTable({
     sessionList,
@@ -15,12 +15,10 @@ function SessionTable({
     const searchParam = useSearchParams()
     const params = new URLSearchParams(searchParam.toString())
     const router = useRouter()
-    const filmContext = useFilmContext()
+    const bookingContext = useBookingContext()
 
     const onSelectSession = (sessionData: any) => {
-        filmContext.setFilmPageSetting({
-            subtitle: sessionData.cinemaName as string
-        })
+        bookingContext.setSessionData(sessionData)
         router.push(`sessions/${sessionData.id}?${params.toString()}`);
     }
 
@@ -62,18 +60,19 @@ function CinemaRow({ cinemaData }: { cinemaData: any }) {
     return (
         <List.Item className="w-full flex justify-between px-4 py-3 mt-0 border-b-2 border-b-border-color">
             <div>
-                <Typography component="p" className="text-lg font-bold">{cinemaData.cinemaName}</Typography>
+                <Typography component="p" className="text-lg font-bold">{cinemaData.cinema_name}</Typography>
                 <Typography component="span" className="text-sm text-text-secondary-color">${cinemaData.cinemaAddress}</Typography>
             </div>
             <div>
                 <Typography component="p" className="text-sm text-text-secondary-color flex items-center gap-1">
                     <Mark />
-                    {cinemaData.cinemaDistance}
+                    {cinemaData.cinema_distance}
                 </Typography>
             </div>
         </List.Item>
     )
 }
+
 function SessionRow({ sessionData, onSelectSession }: { sessionData: any, onSelectSession: any }) {
     return (
         <List.Item

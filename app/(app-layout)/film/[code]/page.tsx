@@ -1,38 +1,30 @@
 "use client";
 
+import { AppHeader } from "@/app/components/AppHeader";
+import FilmTab from "@/app/components/FilmTab";
 import Typography from "@/app/components/Typography";
+import { useFilmContext } from "@/app/context/FilmContext";
 import { Button } from "flowbite-react";
 import { useParams, useRouter } from 'next/navigation';
 import { Children } from "react";
 
-// import { Play } from "@/app/components/Icon";
-// import classNames from "classnames";
-
 function Film() {
     const router = useRouter()
     const param = useParams()
-
-    const filmData = {
-        trailer: {
-            url: "https://www.w3schools.com/html/mov_bbb.mp4",
-            type: "video/mp4",
-        },
-        description: "When the Riddler, a sadistic serial killer, begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
-        filmAttributes: {
-            certificate: "16+",
-            runtime: "02:56",
-            release: "2022",
-            genre: "Action, Crime, Drama",
-            director: "Matt Reeves",
-            cast: "Robert Pattinson, Zoë Kravitz, Jeffrey Wright, Colin Farrell, Paul Dano, John Turturro, 	Andy Serkis, Peter Sarsgaard",
-        },
-    }
+    const { detailFilmData: filmData } = useFilmContext()
 
     return (
         <>
+            <AppHeader 
+                config={{
+                    title: filmData?.name || "Film",
+                }}
+            />
+            <FilmTab />
+
             <div  className="w-full mt-1 relative">
                 <video className="w-full" controls>
-                    <source src={filmData.trailer.url} type={filmData.trailer.type} />
+                    <source src={filmData?.trailer?.url} type={filmData?.trailer?.type} />
                     Your browser does not support the video tag.
                 </video>
 
@@ -63,7 +55,7 @@ function Film() {
                 <table className="mt-4 border-spacing-y-3 border-separate">
                     <tbody>
                         {
-                            Children.toArray(Object.entries(filmData.filmAttributes).map(([key, value]) => (
+                            Children.toArray(Object.entries(filmData?.filmAttributes || {}).map(([key, value]) => (
                                 <tr>
                                     <td className="flex capitalize text-sm text-text-secondary-color">{key}</td>
                                     <td className="pl-5">{value}</td>

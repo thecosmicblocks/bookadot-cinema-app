@@ -21,6 +21,7 @@ const config: Config = {
         "text-secondary-color": "var(--text-secondary-color)",
         "button-primary-color": "var(--button-primary-color)",
         "border-color": "var(--border-color)",
+        "light-border-color": "var(--light-border-color)",
         "header-border-color": "var(--header-border-color)",
       },
       fontSize: {

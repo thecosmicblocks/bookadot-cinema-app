@@ -487,7 +487,7 @@ export const themes: CustomFlowbiteTheme = {
       },
     },
     content: {
-      base: "p-5 first:rounded-t-lg last:rounded-b-lg dark:bg-gray-900",
+      base: "p-5 first:rounded-t-lg last:rounded-b-lg dark:bg-transparent",
     },
     title: {
       arrow: {
@@ -499,13 +499,13 @@ export const themes: CustomFlowbiteTheme = {
       },
       base: "flex w-full items-center justify-between p-5 text-left font-medium text-gray-500 first:rounded-t-lg last:rounded-b-lg dark:text-gray-400",
       flush: {
-        off: " dark:hover:bg-gray-800 dark:focus:ring-gray-800",
+        off: " dark:hover:bg-border-color dark:focus:ring-border-color",
         on: "bg-transparent dark:bg-transparent",
       },
       heading: "",
       open: {
         off: "",
-        on: "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white",
+        on: "bg-gray-100 text-gray-900 dark:bg-border-color dark:text-white",
       },
     },
   },
@@ -770,5 +770,10 @@ export const themes: CustomFlowbiteTheme = {
         },
       },
     },
-  }
+  },
+  radio: {
+    "root": {
+        "base": "h-4 w-4 border border-gray-300 text-accent-color focus:ring-2 dark:focus:bg-accent-color dark:focus:bg-accent-color"
+    }      
+  },
 };
