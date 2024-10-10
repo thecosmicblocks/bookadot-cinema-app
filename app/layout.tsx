@@ -8,6 +8,11 @@ import { Container } from "./components/Container";
 import { Suspense } from "react";
 import { FilmContextProvider } from "./context/FilmContext";
 import { BookingContextProvider } from "./context/BookingContext";
+import { WagmiContext } from "./context/WagmiContext";
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
+import { wagmiAdapter } from "./utils/wagmiConfig";
+import { TanstackContext } from "./context/TanstackContext";
 
 const fontIter = Inter({
     subsets: ["latin"],
@@ -24,6 +29,10 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const initialState = cookieToInitialState(
+        wagmiAdapter.wagmiConfig,
+        headers().get('cookie')
+    )
     return (
         <html lang="en" suppressHydrationWarning className={fontIter.className}>
             <head>
@@ -33,18 +42,22 @@ export default function RootLayout({
             </head>
             <body className={"bookadot-body flex w-full flex-col items-center"}>
                 <Flowbite theme={{ mode: "dark", theme: themes }}>
-                    <Container className={`min-h-[50vh] w-full`}>
-                        <main className="min-h-screen relative">
-                            <Suspense fallback="Loading ...">
-                                <FilmContextProvider>
-                                    <BookingContextProvider>
-                                        {children}
-                                    </BookingContextProvider>
-                                </FilmContextProvider>
-                            </Suspense>
-                        </main>
-                        <TCBFooter></TCBFooter>
-                    </Container>
+                    <WagmiContext initialState={initialState}>
+                        <TanstackContext>
+                            <Container className={`min-h-[50vh] w-full`}>
+                                <main className="min-h-screen relative">
+                                    <Suspense fallback="Loading ...">
+                                        <FilmContextProvider>
+                                            <BookingContextProvider>
+                                                {children}
+                                            </BookingContextProvider>
+                                        </FilmContextProvider>
+                                    </Suspense>
+                                </main>
+                                <TCBFooter></TCBFooter>
+                            </Container>
+                        </TanstackContext>
+                    </WagmiContext>
                 </Flowbite>
             </body>
         </html>
