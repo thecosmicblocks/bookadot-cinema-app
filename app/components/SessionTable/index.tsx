@@ -37,18 +37,18 @@ function SessionTable({
 
 
             {Children.toArray(
-                sessionList.map((filmOrCinema) => (
+                sessionList.map((movieOrCinema) => (
                     isGroupedByCinema ? (
                         <>
-                            <CinemaRow cinemaData={filmOrCinema} />
+                            <CinemaRow cinemaData={movieOrCinema} />
                             {
-                                filmOrCinema.sessionList.map((sessionData: any) => (
-                                    <SessionRow sessionData={sessionData} onSelectSession={onSelectSession}/>
+                                movieOrCinema.sessionList.map((sessionData: any) => (
+                                    <SessionRow sessionData={sessionData} onSelectSession={onSelectSession} />
                                 ))
                             }
                         </>
                     ) : (
-                        <SessionRow sessionData={filmOrCinema} onSelectSession={onSelectSession} />
+                        <SessionRow sessionData={movieOrCinema} onSelectSession={onSelectSession} />
                     )
                 ))
             )}

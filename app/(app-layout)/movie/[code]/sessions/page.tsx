@@ -2,11 +2,11 @@
 
 import { AppHeader } from "@/app/components/AppHeader"
 import DatePicker from "@/app/components/DatePicker"
-import FilmTab from "@/app/components/FilmTab"
+import MovieTab from "@/app/components/MovieTab"
 import { DoubleArrow } from "@/app/components/Icon"
 import SessionTable from "@/app/components/SessionTable"
 import Typography from "@/app/components/Typography"
-import { useFilmContext } from "@/app/context/FilmContext"
+import { useMovieContext } from "@/app/context/MovieContext"
 import dayjs from "dayjs"
 import { ToggleSwitch } from "flowbite-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -67,7 +67,7 @@ function Sessions() {
     const pathname = usePathname()
     const params = new URLSearchParams(searchParam.toString())
 
-    const { detailFilmData: filmData } = useFilmContext()
+    const { detailMovieData: movieData } = useMovieContext()
 
     const isSortedByTimeDesc = searchParam.get('time') === 'asc' ? false : true
     const isGroupedByCinema = searchParam.get('group_by') === 'cinema' ? true : false
@@ -98,22 +98,22 @@ function Sessions() {
     const onFilterByDate = useCallback((date: Date) => {
         const _date = dayjs(date).format(DATE_FORMAT_PATTERN)
         setSortParams(prev => ({ ...prev, date: _date }))
-        params.set("date", _date);        
+        params.set("date", _date);
         router.push(`${pathname}?${params.toString()}`);
     }, [sortParams.date])
 
     return (
         <>
-            <AppHeader 
+            <AppHeader
                 config={{
-                    title: filmData?.name || "Film"
+                    title: movieData?.name || "Movie"
                 }}
             />
-            <FilmTab />
+            <MovieTab />
 
             <div className="flex py-4">
                 <div className="flex flex-col items-center w-1/3 relative">
-                    <DatePicker 
+                    <DatePicker
                         onSelectedDateChanged={onFilterByDate}
                         value={sortParams.date}
                     />

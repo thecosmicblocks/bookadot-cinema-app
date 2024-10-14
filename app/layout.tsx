@@ -6,13 +6,14 @@ import { TCBFooter } from "@/app/components/Footer";
 import { Inter } from "next/font/google";
 import { Container } from "./components/Container";
 import { Suspense } from "react";
-import { FilmContextProvider } from "./context/FilmContext";
+import { MovieContextProvider } from "./context/MovieContext";
 import { BookingContextProvider } from "./context/BookingContext";
 import { WagmiContext } from "./context/WagmiContext";
 import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import { wagmiAdapter } from "./utils/wagmiConfig";
 import { TanstackContext } from "./context/TanstackContext";
+import { UserContextProvider } from "./context/UserContext";
 
 const fontIter = Inter({
     subsets: ["latin"],
@@ -42,22 +43,24 @@ export default function RootLayout({
             </head>
             <body className={"bookadot-body flex w-full flex-col items-center"}>
                 <Flowbite theme={{ mode: "dark", theme: themes }}>
-                    <WagmiContext initialState={initialState}>
-                        <TanstackContext>
-                            <Container className={`min-h-[50vh] w-full`}>
-                                <main className="min-h-screen relative">
-                                    <Suspense fallback="Loading ...">
-                                        <FilmContextProvider>
-                                            <BookingContextProvider>
-                                                {children}
-                                            </BookingContextProvider>
-                                        </FilmContextProvider>
-                                    </Suspense>
-                                </main>
-                                <TCBFooter></TCBFooter>
-                            </Container>
-                        </TanstackContext>
-                    </WagmiContext>
+                    <UserContextProvider>
+                        <WagmiContext initialState={initialState}>
+                            <TanstackContext>
+                                <Container className={`min-h-[50vh] w-full`}>
+                                    <main className="min-h-screen relative">
+                                        <Suspense fallback="Loading ...">
+                                            <MovieContextProvider>
+                                                <BookingContextProvider>
+                                                    {children}
+                                                </BookingContextProvider>
+                                            </MovieContextProvider>
+                                        </Suspense>
+                                    </main>
+                                    <TCBFooter></TCBFooter>
+                                </Container>
+                            </TanstackContext>
+                        </WagmiContext>
+                    </UserContextProvider>
                 </Flowbite>
             </body>
         </html>

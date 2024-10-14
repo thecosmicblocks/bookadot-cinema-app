@@ -3,16 +3,17 @@
 import React from 'react'
 import BookingBoard from '@/app/components/BookingBoard'
 import { AppHeader } from '@/app/components/AppHeader'
-import { useFilmContext } from '@/app/context/FilmContext'
+import { useMovieContext } from '@/app/context/MovieContext'
 import { useBookingContext } from '@/app/context/BookingContext'
 import { Expand, Compress, Calendar, Clock, SmallX, Screen, ScreenSmall } from "@/app/components/Icon";
 import Typography from '@/app/components/Typography'
 import { Button } from 'flowbite-react'
 import { usePathname, useRouter } from 'next/navigation'
+import dayjs from 'dayjs'
 
 function SessionDetail() {
-    const { detailFilmData: filmData } = useFilmContext()
-    
+    const { detailMovieData: movieData } = useMovieContext()
+
     const router = useRouter()
     const pathname = usePathname()
     const { sessionData } = useBookingContext()
@@ -24,7 +25,7 @@ function SessionDetail() {
             <AppHeader
                 config={{
                     title: sessionData?.cinema_name,
-                    subtitle: filmData?.name
+                    subtitle: movieData?.name
                 }}
                 rightIcon={
                     isPreviewMode ? (
@@ -40,7 +41,7 @@ function SessionDetail() {
                 <div className="border border-light-border-color py-2 rounded-lg w-5/12">
                     <div className="flex items-center justify-center">
                         <Calendar />
-                        <Typography>April, 14</Typography>
+                        <Typography>{dayjs().format('MMM, DD')}</Typography>
                     </div>
                 </div>
                 <div className='border border-light-border-color py-2 rounded-lg w-5/12'>
@@ -68,23 +69,23 @@ function SessionDetail() {
             </div>
 
             <Typography
-              component="h5"
-              className="text-center uppercase text-text-secondary-color"
+                component="h5"
+                className="text-center uppercase text-text-secondary-color"
             >
-              Screen
+                Screen
             </Typography>
             <div
                 className='flex justify-center my-2'
             >
                 {!isPreviewMode ? (
-              <Screen
-                style={{
-                  minWidth: "593px",
-                }}
-              />
-              ) : (
-                  <ScreenSmall />
-              )}
+                    <Screen
+                        style={{
+                            minWidth: "593px",
+                        }}
+                    />
+                ) : (
+                    <ScreenSmall />
+                )}
             </div>
 
 
@@ -103,7 +104,7 @@ function SessionDetail() {
 
 
             <div className='absolute bottom-4 w-full px-4'>
-                <Button 
+                <Button
                     size="xl"
                     className="w-full mt-4" color="bookadot-primary"
                     onClick={() => router.push(`${pathname}/checkout`)}

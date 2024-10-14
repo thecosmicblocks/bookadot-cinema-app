@@ -3,15 +3,22 @@
 import { AppHeader } from '@/app/components/AppHeader'
 import Typography from '@/app/components/Typography'
 import { useBookingContext } from '@/app/context/BookingContext'
-import { useFilmContext } from '@/app/context/FilmContext'
+import { useMovieContext } from '@/app/context/MovieContext'
+import { getBookingSignature, saveTicketData } from '@/app/services/ticketService'
+import { useWriteBookadotPropertyBook } from '@/app/utils/bookadot-sdk'
+import { publicClient } from '@/app/utils/wagmiConfig'
+import { useMutation } from '@tanstack/react-query'
 import { Accordion, Button, Label, Radio } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { Children, useState } from 'react'
+import { useAccount } from 'wagmi'
 
 function Checkout() {
-    const { detailFilmData: filmData } = useFilmContext()
+    const { detailMovieData: movieData } = useMovieContext()
     const { selectedSeats, sessionData } = useBookingContext()
     const router = useRouter()
+    const { address } = useAccount()
+    const { writeContractAsync } = useWriteBookadotPropertyBook()
     const ticketData = {
         Cinema: `${sessionData?.cinema_name}\n${sessionData?.cinema_address}`,
         Date: sessionData?.date,
@@ -22,19 +29,55 @@ function Checkout() {
         {
             symbol: "GLMR",
             address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            price: 100
+            price: 26.15
         },
-        {
-            symbol: "USDT",
-            address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-            price: 5
-        }
+        // {
+        //     symbol: "USDT",
+        //     address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+        //     price: 5.23
+        // }
     ]
     const [selectedCrypto, setSelectedCrypto] = useState(SUPPORTED_CRYPTO[0])
 
-    const onPay = () => {
-        alert(`You have paid ${selectedSeats.length * selectedCrypto.price} ${selectedCrypto.symbol}`)
-        router.push(`/my-ticket/${Math.random()}`)
+    const { isPending, mutateAsync } = useMutation({
+        mutationKey: ["checkout"],
+        mutationFn: async (data: any) => {
+            const ticketData = await getBookingSignature(data)
+
+            const txHash = await writeContractAsync({
+                address: data.property,
+                args: [
+                    ticketData.param,
+                    ticketData.signature
+                ],
+            })
+            await publicClient.waitForTransactionReceipt({
+                hash: txHash
+            })
+            ticketData.ticket.txHash = txHash
+            return ticketData.ticket
+        },
+        onError: (error) => {
+            console.log({ error });
+            // @ts-ignore
+            alert("Failed to book ticket. " + (error.shortMessage || ""))
+            return false
+        },
+        onSettled: async (ticketData) => {
+            if (!ticketData) return
+            ticketData.status = 'paid'
+            await saveTicketData(ticketData)
+            router.push(`/my-ticket/${ticketData.id}`)
+        },
+    });
+
+    const onPay = async () => {
+        mutateAsync({
+            "token": selectedCrypto.address,
+            "seats": selectedSeats.join(","),
+            "property": "0x9B49F02E21F61aC58eEc39054258230ED14Ba174",
+            "owner": address
+        })
     }
 
     return (
@@ -45,7 +88,7 @@ function Checkout() {
                 }}
             />
             <div className='bg-foreground-color p-4'>
-                <Typography component='h4' className="font-bold">{filmData?.name}</Typography>
+                <Typography component='h4' className="font-bold">{movieData?.name}</Typography>
                 <table className="mt-4 border-spacing-y-3 border-separate">
                     <tbody>
                         {
@@ -102,6 +145,7 @@ function Checkout() {
                 size="xl"
                 className="w-full mt-4" color="bookadot-primary"
                 onClick={onPay}
+                disabled={isPending}
             >
                 Pay {selectedSeats.length * selectedCrypto.price} ${selectedCrypto.symbol}
             </Button>

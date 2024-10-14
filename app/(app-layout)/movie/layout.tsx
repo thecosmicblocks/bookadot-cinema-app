@@ -1,17 +1,17 @@
 "use client";
 
-import { useFilmContext } from "@app/context/FilmContext";
+import { useMovieContext } from "@/app/context/MovieContext";
 import { useEffect } from "react";
 
 export default function AppLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
-  }>) {
-    const filmContext = useFilmContext()    
+}>) {
+    const movieContext = useMovieContext()
 
     useEffect(() => {
-        filmContext.setDetailFilmData({
+        movieContext.setDetailMovieData({
             id: "1",
             code: 'lat-mat-6',
             name: "Lật mặt 6",
@@ -24,7 +24,7 @@ export default function AppLayout({
                 type: "video/mp4",
             },
             description: "When the Riddler, a sadistic serial killer, begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
-            filmAttributes: {
+            movieAttributes: {
                 certificate: "16+",
                 runtime: "02:56",
                 release: "2022",

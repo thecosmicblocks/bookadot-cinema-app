@@ -1,10 +1,10 @@
-export interface IFilm {
-    id: string    
+export interface IMovie {
+    id: string
     name: string
     code: string
     description: string
     trailer: Trailer
-    filmAttributes: IFilmAttributes
+    movieAttributes: IMovieAttributes
     image: string
     category: string
     point: number | string
@@ -15,7 +15,7 @@ export interface Trailer {
     type: string
 }
 
-export interface IFilmAttributes {
+export interface IMovieAttributes {
     certificate: string
     runtime: string
     release: string
@@ -24,4 +24,4 @@ export interface IFilmAttributes {
     cast: string
 }
 
-export type PartialFilm = Partial<IFilm>;
+export type PartialMovie = Partial<IMovie>;

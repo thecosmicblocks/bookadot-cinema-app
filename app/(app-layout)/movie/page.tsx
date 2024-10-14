@@ -2,8 +2,8 @@
 
 import { redirect } from 'next/navigation';
 
-function Film() {
+function Movie() {
     redirect('/')
 }
 
-export default Film
+export default Movie

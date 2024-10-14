@@ -1,30 +1,30 @@
 "use client";
 
 import { AppHeader } from "@/app/components/AppHeader";
-import FilmTab from "@/app/components/FilmTab";
+import MovieTab from "@/app/components/MovieTab";
 import Typography from "@/app/components/Typography";
-import { useFilmContext } from "@/app/context/FilmContext";
+import { useMovieContext } from "@/app/context/MovieContext";
 import { Button } from "flowbite-react";
 import { useParams, useRouter } from 'next/navigation';
 import { Children } from "react";
 
-function Film() {
+function Movie() {
     const router = useRouter()
     const param = useParams()
-    const { detailFilmData: filmData } = useFilmContext()
+    const { detailMovieData: movieData } = useMovieContext()
 
     return (
         <>
-            <AppHeader 
+            <AppHeader
                 config={{
-                    title: filmData?.name || "Film",
+                    title: movieData?.name || "Movie",
                 }}
             />
-            <FilmTab />
+            <MovieTab />
 
-            <div  className="w-full mt-1 relative">
+            <div className="w-full mt-1 relative">
                 <video className="w-full" controls>
-                    <source src={filmData?.trailer?.url} type={filmData?.trailer?.type} />
+                    <source src={movieData?.trailer?.url} type={movieData?.trailer?.type} />
                     Your browser does not support the video tag.
                 </video>
 
@@ -40,7 +40,7 @@ function Film() {
                     <Typography component="p" className="font-bold text-xl">8.3</Typography>
                     <Typography component="p" className="text-sm text-text-secondary-color">IMDB</Typography>
                 </div>
-                <hr className="rotate-90 w-10 h-full"/>
+                <hr className="rotate-90 w-10 h-full" />
                 <div className="w-1/2 text-center py-3 px-4">
                     <Typography component="p" className="font-bold text-xl">7.9</Typography>
                     <Typography component="p" className="text-sm text-text-secondary-color">Kinopoisk</Typography>
@@ -49,13 +49,13 @@ function Film() {
 
             <div className="p-4">
                 <Typography component="h4" className="text-sm mt-5">
-                When the Riddler, a sadistic serial killer, begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.
+                    When the Riddler, a sadistic serial killer, begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.
                 </Typography>
 
                 <table className="mt-4 border-spacing-y-3 border-separate">
                     <tbody>
                         {
-                            Children.toArray(Object.entries(filmData?.filmAttributes || {}).map(([key, value]) => (
+                            Children.toArray(Object.entries(movieData?.movieAttributes || {}).map(([key, value]) => (
                                 <tr>
                                     <td className="flex capitalize text-sm text-text-secondary-color">{key}</td>
                                     <td className="pl-5">{value}</td>
@@ -65,10 +65,10 @@ function Film() {
                     </tbody>
                 </table>
 
-                <Button 
+                <Button
                     size="xl"
                     className="w-full mt-4" color="bookadot-primary"
-                    onClick={() => router.push(`/film/${param.code}/sessions`)}
+                    onClick={() => router.push(`/movie/${param.code}/sessions`)}
                 >
                     Select Session
                 </Button>
@@ -77,4 +77,4 @@ function Film() {
     )
 }
 
-export default Film
+export default Movie
