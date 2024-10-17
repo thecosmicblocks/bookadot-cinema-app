@@ -14,6 +14,8 @@ import { cookieToInitialState } from "wagmi";
 import { wagmiAdapter } from "./utils/wagmiConfig";
 import { TanstackContext } from "./context/TanstackContext";
 import { UserContextProvider } from "./context/UserContext";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const fontIter = Inter({
     subsets: ["latin"],
@@ -62,6 +64,7 @@ export default function RootLayout({
                         </WagmiContext>
                     </UserContextProvider>
                 </Flowbite>
+                <ToastContainer theme="dark" position="top-center" />
             </body>
         </html>
     );

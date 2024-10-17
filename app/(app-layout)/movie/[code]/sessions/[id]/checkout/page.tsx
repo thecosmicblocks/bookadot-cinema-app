@@ -12,13 +12,17 @@ import { Accordion, Button, Label, Radio } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
 import React, { Children, useState } from 'react'
 import { useAccount } from 'wagmi'
+import { toast } from 'react-toastify'
+import { useAppKit } from '@reown/appkit/react'
 
 function Checkout() {
     const { detailMovieData: movieData } = useMovieContext()
     const { selectedSeats, sessionData } = useBookingContext()
     const router = useRouter()
-    const { address } = useAccount()
+    const { address, isConnected } = useAccount()
+    const { open: openWalletModal } = useAppKit()
     const { writeContractAsync } = useWriteBookadotPropertyBook()
+
     const ticketData = {
         Cinema: `${sessionData?.cinema_name}\n${sessionData?.cinema_address}`,
         Date: sessionData?.date,
@@ -42,15 +46,21 @@ function Checkout() {
     const { isPending, mutateAsync } = useMutation({
         mutationKey: ["checkout"],
         mutationFn: async (data: any) => {
+            if (!isConnected) {
+                openWalletModal()
+                return
+            }
             const ticketData = await getBookingSignature(data)
 
             const txHash = await writeContractAsync({
-                address: data.property,
+                address: ticketData.ticket.session.contract.property_address,
                 args: [
                     ticketData.param,
                     ticketData.signature
                 ],
+                value: ticketData.ticket.amount
             })
+            toast.info("Submitted transaction. Waiting for confirmation...")
             await publicClient.waitForTransactionReceipt({
                 hash: txHash
             })
@@ -60,13 +70,14 @@ function Checkout() {
         onError: (error) => {
             console.log({ error });
             // @ts-ignore
-            alert("Failed to book ticket. " + (error.shortMessage || ""))
+            toast.error("Failed to book ticket. " + (error.shortMessage || ""))
             return false
         },
         onSettled: async (ticketData) => {
             if (!ticketData) return
             ticketData.status = 'paid'
             await saveTicketData(ticketData)
+            toast.success("Payment successful. Thanks for using Bookadot!")
             router.push(`/my-ticket/${ticketData.id}`)
         },
     });
@@ -75,8 +86,8 @@ function Checkout() {
         mutateAsync({
             "token": selectedCrypto.address,
             "seats": selectedSeats.join(","),
-            "property": "0x9B49F02E21F61aC58eEc39054258230ED14Ba174",
-            "owner": address
+            "owner": address,
+            session_id: 4360
         })
     }
 

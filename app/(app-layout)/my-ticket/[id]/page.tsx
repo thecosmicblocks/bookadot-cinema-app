@@ -5,19 +5,31 @@ import { AppHeader } from '@/app/components/AppHeader'
 import Image from 'next/image'
 import Typography from '@/app/components/Typography'
 import dayjs from 'dayjs'
+import { useQuery } from '@tanstack/react-query'
+import { getMyTicket } from '@/app/services/ticketService'
+import { useParams } from 'next/navigation'
 
 function DetailTicket() {
-    const selectedSeats = ["A1", "A2", "A3"]
-    const ticketData = {
-        Cinema: `Eurasia Cinema7 - ул. Петрова, д.24, ТЦ "Евразия"`,
-        Date: dayjs().format('D MMMM YYYY, HH:mm'),
-        Hall: "6th",
-        Seats: selectedSeats.join(", "),
-    }
     const selectedCrypto = {
         symbol: "GLMR",
         price: 100
     }
+    const { id } = useParams()
+
+    const { data } = useQuery({
+        queryKey: ['getTicketData'],
+        queryFn: () =>
+            getMyTicket(id as string),
+    })
+
+    const selectedSeats = data?.seats?.split(',') || []
+    const ticketData = {
+        Cinema: `${data?.session.cinema.cinema_name} - at ${data?.session.cinema.cinema_address}`,
+        Date: data?.session.date ? `${dayjs(data?.session.date).format('D MMMM YYYY')}, ${data?.session.time}` : "",
+        Hall: "6th",
+        Seats: data?.seats,
+    }
+
     return (
         <>
             <AppHeader
@@ -29,7 +41,7 @@ function DetailTicket() {
 
             <div className='w-full justify-center flex mb-4'>
                 <Image
-                    src={"/assets/demo_ticket.png"}
+                    src={"https://s3.ap-southeast-1.amazonaws.com/cdn.thecosmicblock.com/tickets/ticket-5d03406d2972727d7c.png"}
                     alt="ticket"
                     width={400}
                     height={400}
@@ -52,7 +64,7 @@ function DetailTicket() {
                         }
                         <tr>
                             <td className="flex capitalize text-sm text-text-secondary-color">Total</td>
-                            <td className="pl-5">{selectedSeats.length * selectedCrypto.price} ${selectedCrypto.symbol} (Paid)</td>
+                            <td className="pl-5">{selectedSeats.length * selectedCrypto.price} ${selectedCrypto.symbol} ({data?.status || ""})</td>
                         </tr>
                     </tbody>
                 </table>
