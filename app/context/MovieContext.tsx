@@ -14,7 +14,7 @@ const MovieContext = createContext<MovieContextType>({
 });
 
 export function MovieContextProvider({ children }: Readonly<{ children: ReactNode }>) {
-    const [detailMovieData, setGlobalDetailMovieData] = useState<PartialMovie>();
+    const [detailMovieData, setGlobalDetailMovieData] = useState<MovieContextType['detailMovieData']>(undefined);
     const setDetailMovieData = useCallback((data: PartialMovie) => setGlobalDetailMovieData(data), [])
 
     return (

@@ -10,6 +10,7 @@ const instance = axios.create({
     //     Authorization: userInfo?.accessToken.token
     // }
 })
+export const getImageUrl = (path: string, size: string = 'w780') => `${process.env.NEXT_PUBLIC_API_URL}/image/${size}/${path}`
 
 instance.interceptors.request.use(
     (config: any) => {

@@ -87,7 +87,7 @@ function Checkout() {
             "token": selectedCrypto.address,
             "seats": selectedSeats.join(","),
             "owner": address,
-            session_id: 4360
+            session_id: sessionData?.id
         })
     }
 
@@ -99,7 +99,7 @@ function Checkout() {
                 }}
             />
             <div className='bg-foreground-color p-4'>
-                <Typography component='h4' className="font-bold">{movieData?.name}</Typography>
+                <Typography component='h4' className="font-bold">{movieData?.title}</Typography>
                 <table className="mt-4 border-spacing-y-3 border-separate">
                     <tbody>
                         {

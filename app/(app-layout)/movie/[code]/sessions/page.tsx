@@ -68,6 +68,9 @@ function Sessions() {
     const params = new URLSearchParams(searchParam.toString())
 
     const { detailMovieData: movieData } = useMovieContext()
+    console.log('-----');
+
+    console.log(movieData);
 
     const isSortedByTimeDesc = searchParam.get('time') === 'asc' ? false : true
     const isGroupedByCinema = searchParam.get('group_by') === 'cinema' ? true : false
@@ -106,7 +109,7 @@ function Sessions() {
         <>
             <AppHeader
                 config={{
-                    title: movieData?.name || "Movie"
+                    title: movieData?.title || "Movie"
                 }}
             />
             <MovieTab />

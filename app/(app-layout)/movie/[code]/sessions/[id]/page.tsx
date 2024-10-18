@@ -25,7 +25,7 @@ function SessionDetail() {
             <AppHeader
                 config={{
                     title: sessionData?.cinema_name,
-                    subtitle: movieData?.name
+                    subtitle: movieData?.title
                 }}
                 rightIcon={
                     isPreviewMode ? (
