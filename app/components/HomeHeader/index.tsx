@@ -11,7 +11,7 @@ export const HomeHeader = () => {
         <Navbar fluid rounded>
             <Navbar.Brand href={process.env.NEXT_PUBLIC_SITE_URL!}>
                 <Image
-                    src={"/logo.jpeg"}
+                    src={"https://s3.ap-southeast-1.amazonaws.com/cdn.thecosmicblock.com/bookadot-icon.png"}
                     width={65}
                     height={65}
                     alt="Bookadot"
