@@ -30,28 +30,29 @@ export default function Home() {
 
 
             {
-                movieData && movieData.data.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {Children.toArray(
-                            movieData.data.map((movie) => (
-                                <div className="pt-4">
-                                    <MovieCard {...movie} />
-                                </div>
-                            ))
-                        )}
-                    </div>
+                movieData && movieData.data && movieData.data.length > 0 ? (
+                    <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {Children.toArray(
+                                movieData.data.map((movie) => (
+                                    <div className="pt-4">
+                                        <MovieCard {...movie} />
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                        <div className="flex overflow-x-auto sm:justify-center">
+                            <Pagination
+                                currentPage={queryParams._page}
+                                totalPages={Math.ceil((movieData?.total || 0) / queryParams._limit)}
+                                onPageChange={(page) => setQueryParams({ ...queryParams, _page: page })}
+                            />
+                        </div>
+                    </>
                 ) : (
-                    <Typography component="p" className="text-center">No data</Typography>
+                    <Typography component="p" className="text-center mt-5">No data</Typography>
                 )
             }
-
-            <div className="flex overflow-x-auto sm:justify-center">
-                <Pagination
-                    currentPage={queryParams._page}
-                    totalPages={Math.ceil((movieData?.total || 0) / queryParams._limit)}
-                    onPageChange={(page) => setQueryParams({ ...queryParams, _page: page })}
-                />
-            </div>
         </div>
     );
 }

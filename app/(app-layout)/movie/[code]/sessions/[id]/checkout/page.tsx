@@ -14,19 +14,20 @@ import React, { Children, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { toast } from 'react-toastify'
 import { useAppKit } from '@reown/appkit/react'
+import dayjs from 'dayjs'
 
 function Checkout() {
     const { detailMovieData: movieData } = useMovieContext()
-    const { selectedSeats, sessionData } = useBookingContext()
+    const { selectedSeats, sessionData, setSelectedSeats, setSessionData } = useBookingContext()
     const router = useRouter()
     const { address, isConnected } = useAccount()
     const { open: openWalletModal } = useAppKit()
     const { writeContractAsync } = useWriteBookadotPropertyBook()
 
     const ticketData = {
-        Cinema: `${sessionData?.cinema_name}\n${sessionData?.cinema_address}`,
-        Date: sessionData?.date,
-        Hall: sessionData?.cinema_hall,
+        Cinema: `${sessionData?.cinema_name || sessionData?.cinema?.cinema_name || "Cinema"}\n${sessionData?.cinema_address || sessionData?.cinema?.cinema_address || "Address"}`,
+        Date: sessionData?.date ? `${dayjs(sessionData?.date).format('D MMMM YYYY')}, ${sessionData?.time}` : "",
+        Hall: sessionData?.cinema_hall || sessionData?.cinema?.cinema_hall || "Hall",
         Seats: selectedSeats.join(', '),
     }
     const SUPPORTED_CRYPTO = [
@@ -77,7 +78,9 @@ function Checkout() {
             if (!ticketData) return
             ticketData.status = 'paid'
             await saveTicketData(ticketData)
-            toast.success("Payment successful. Thanks for using Bookadot!")
+            toast.success("Payment successful.\nThanks for using Bookadot!")
+            setSelectedSeats([])
+            setSessionData(undefined)
             router.push(`/my-ticket/${ticketData.id}`)
         },
     });

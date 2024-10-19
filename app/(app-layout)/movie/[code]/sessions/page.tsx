@@ -9,55 +9,13 @@ import Typography from "@/app/components/Typography"
 import { useMovieContext } from "@/app/context/MovieContext"
 import dayjs from "dayjs"
 import { ToggleSwitch } from "flowbite-react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
-
-
-const SESSION_DATA = [
-    {
-        id: 1,
-        time: '10:00 AM',
-        roomType: "IMAX",
-        adult: 3500,
-        child: 2200,
-        student: 1540,
-        vip: 0,
-        cinema_name: 'Cinema 1',
-        cinema_address: '1234 Street, City, Country',
-        cinema_id: 1,
-        cinema_hall: 'Hall 1',
-        date: '6 April 2022, 14:40'
-    },
-    {
-        id: 2,
-        time: '10:00 AM',
-        roomType: "IMAX",
-        adult: 3500,
-        child: 2200,
-        student: 1540,
-        vip: 0,
-        cinema_name: 'Cinema 2',
-        cinema_address: '1234 Street, City, Country',
-        cinema_id: 2,
-        cinema_hall: '2nd',
-        date: '6 April 2022, 14:40'
-    },
-]
-
-const GROUPED_BY_CINEMA = [
-    {
-        cinema_name: 'Cinema 1',
-        cinema_address: '1234 Street, City, Country',
-        cinema_distance: '1.2 km',
-        sessionList: SESSION_DATA
-    },
-    {
-        cinema_name: 'Cinema 2',
-        cinema_address: '1234 Street, City, Country',
-        cinema_distance: '1.5 km',
-        sessionList: SESSION_DATA
-    }
-]
+import { useQuery } from "@tanstack/react-query"
+import { QueryResult } from "@/app/interfaces/Query"
+import { ISession, PartialSession, PartialSessionGroupedByCinema } from "@/app/interfaces/Session"
+import { getMovieSession } from "@/app/services/sessionService"
+import { groupSessionsByCinema } from "@/app/utils/helper"
 
 const DATE_FORMAT_PATTERN = 'YYYY-MM-DD'
 
@@ -65,12 +23,9 @@ function Sessions() {
     const searchParam = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
-    const params = new URLSearchParams(searchParam.toString())
-
+    const searchParams = new URLSearchParams(searchParam.toString())
+    const pathParams = useParams()
     const { detailMovieData: movieData } = useMovieContext()
-    console.log('-----');
-
-    console.log(movieData);
 
     const isSortedByTimeDesc = searchParam.get('time') === 'asc' ? false : true
     const isGroupedByCinema = searchParam.get('group_by') === 'cinema' ? true : false
@@ -80,29 +35,43 @@ function Sessions() {
         date: dayjs().format(DATE_FORMAT_PATTERN)
     })
 
-    const sessionList = sortParams.isGroupedByCinema ? GROUPED_BY_CINEMA : SESSION_DATA
+    const { data: sessionResponse } = useQuery<QueryResult<PartialSession[]>>({
+        queryKey: ['getSession', pathParams.code as string],
+        queryFn: () =>
+            getMovieSession({
+                "_limit": 100,
+                "_page": 1,
+                "movie_code": pathParams.code as string,
+                "_sort": "createdAt",
+                "_order": searchParam.get('time')
+            }),
+    })
+
+    const sessionList = sortParams.isGroupedByCinema ?
+        groupSessionsByCinema((sessionResponse?.data || []) as ISession[]) :
+        sessionResponse?.data
 
     const onSortedByTime = useCallback(() => {
         const _isTimeDesc = !sortParams.isTimeDesc
         setSortParams(prev => ({ ...prev, isTimeDesc: _isTimeDesc }))
-        params.set("time", _isTimeDesc ? "desc" : "asc");
-        router.push(`${pathname}?${params.toString()}`);
+        searchParams.set("time", _isTimeDesc ? "desc" : "asc");
+        router.push(`${pathname}?${searchParams.toString()}`);
     }, [sortParams.isTimeDesc])
 
     const onGroupedByCinema = useCallback(() => {
         const _isGroupedByCinema = !sortParams.isGroupedByCinema
         setSortParams(prev => ({ ...prev, isGroupedByCinema: _isGroupedByCinema }))
         !_isGroupedByCinema ?
-            params.delete("group_by") :
-            params.set("group_by", "cinema");
-        router.push(`${pathname}?${params.toString()}`);
+            searchParams.delete("group_by") :
+            searchParams.set("group_by", "cinema");
+        router.push(`${pathname}?${searchParams.toString()}`);
     }, [sortParams.isGroupedByCinema])
 
     const onFilterByDate = useCallback((date: Date) => {
         const _date = dayjs(date).format(DATE_FORMAT_PATTERN)
         setSortParams(prev => ({ ...prev, date: _date }))
-        params.set("date", _date);
-        router.push(`${pathname}?${params.toString()}`);
+        searchParams.set("date", _date);
+        router.push(`${pathname}?${searchParams.toString()}`);
     }, [sortParams.date])
 
     return (
@@ -153,7 +122,7 @@ function Sessions() {
 
             <SessionTable
                 isGroupedByCinema={sortParams.isGroupedByCinema}
-                sessionList={sessionList}
+                sessionList={(sessionList || []) as PartialSessionGroupedByCinema[]}
             />
         </>
     )

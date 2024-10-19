@@ -12,7 +12,8 @@ import { useParams } from 'next/navigation'
 function DetailTicket() {
     const selectedCrypto = {
         symbol: "GLMR",
-        price: 100
+        address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+        price: 26.15
     }
     const { id } = useParams()
 
@@ -22,11 +23,11 @@ function DetailTicket() {
             getMyTicket(id as string),
     })
 
-    const selectedSeats = data?.seats?.split(',') || []
+    const selectedSeats = data?.seats?.split(', ') || []
     const ticketData = {
         Cinema: `${data?.session.cinema.cinema_name} - at ${data?.session.cinema.cinema_address}`,
         Date: data?.session.date ? `${dayjs(data?.session.date).format('D MMMM YYYY')}, ${data?.session.time}` : "",
-        Hall: "6th",
+        Hall: data?.session?.cinema?.cinema_hall,
         Seats: data?.seats,
     }
 
@@ -39,7 +40,7 @@ function DetailTicket() {
             />
 
 
-            <div className='w-full justify-center flex mb-4'>
+            <div className='w-full justify-center flex mb-4 shadow-xl'>
                 <Image
                     src={"https://s3.ap-southeast-1.amazonaws.com/cdn.thecosmicblock.com/tickets/ticket-5d03406d2972727d7c.png"}
                     alt="ticket"
@@ -51,7 +52,7 @@ function DetailTicket() {
             <Typography className="text-text-secondary-color text-center">Show this code to the gatekeeper at the cinema</Typography>
 
             <div className='p-4 mt-8'>
-                <Typography component='h4' className="font-bold">The Batman</Typography>
+                <Typography component='h4' className="font-bold">{data?.movie?.tile || "Movie"}</Typography>
                 <table className="mt-4 border-spacing-y-3 border-separate">
                     <tbody>
                         {

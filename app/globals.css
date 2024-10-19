@@ -3,20 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --background-color: #222222;
-  --foreground-color: #333333;
+    --background-color: #222222;
+    --foreground-color: #333333;
 
-  --accent-color: #d45161;
+    --accent-color: #d45161;
 
-  --text-primary-color: #ffffff;
-  --text-secondary-color: #ffffff7f;
+    --text-primary-color: #ffffff;
+    --text-secondary-color: #ffffff7f;
 
-  --button-primary-color: #ffffff;
+    --button-primary-color: #ffffff;
 
-  --border-color: rgba(85, 85, 85, 0.50);
-  --light-border-color: #555555;
-  --header-border-color: #ffffff50;
-  --hover-bg: #333333;
+    --border-color: rgba(85, 85, 85, 0.50);
+    --light-border-color: #555555;
+    --header-border-color: #ffffff50;
+    --hover-bg: #333333;
 }
 
 html {
@@ -32,16 +32,16 @@ body {
 }
 
 * {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 a {
-  color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 *[disabled] {
-  cursor: not-allowed;
-  opacity: 0.3;
+    cursor: not-allowed;
+    opacity: 0.3;
 }
 
 
@@ -55,17 +55,21 @@ Booking Board
     max-width: 320px;
     grid-template-columns: repeat(15, 1fr);
 }
+
 .bookingboard-preview-mode .preview-item {
     width: 12px;
     height: 12px;
     border-radius: 50%;
 }
+
 .bookingboard-preview-mode .preview-item.available {
     background-color: var(--foreground-color);
 }
+
 .bookingboard-preview-mode .preview-item.choosen {
     background-color: var(--accent-color);
 }
+
 .bookingboard-selection-mode {
     display: grid;
     padding: 0px 16px 16px 16px;
@@ -74,6 +78,7 @@ Booking Board
     position: relative;
     overflow: auto;
 }
+
 .bookingboard-selection-mode .preview-item {
     width: 32px;
     height: 32px;
@@ -87,17 +92,21 @@ Booking Board
     font-weight: 500;
     color: var(--primary-color);
 }
+
 .bookingboard-selection-mode .preview-item.available {
     background-color: var(--foreground-color);
     cursor: pointer;
 }
+
 .bookingboard-selection-mode .preview-item.available:hover {
     background-color: var(--text-secondary-color);
 }
+
 .bookingboard-selection-mode .preview-item.choosen {
     cursor: pointer;
     background-color: var(--accent-color);
 }
+
 .right-gradient {
     top: 0px;
     right: -10px;
@@ -107,6 +116,7 @@ Booking Board
     position: absolute;
     background: linear-gradient(270deg, #484848 63.02%, rgba(20, 20, 20, 0) 100%);
 }
+
 .left-gradient {
     top: 0px;
     left: -8px;
@@ -122,9 +132,11 @@ Booking Board
     height: 16px;
     border-radius: 50%;
 }
+
 .circle.available {
     background-color: var(--border-color);
 }
+
 .circle.chosen {
     background-color: var(--accent-color);
 }

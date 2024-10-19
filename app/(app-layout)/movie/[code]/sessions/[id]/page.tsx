@@ -10,6 +10,8 @@ import Typography from '@/app/components/Typography'
 import { Button } from 'flowbite-react'
 import { usePathname, useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
+import { useQuery } from '@tanstack/react-query'
+import { getOccupiedSeats } from '@/app/services/sessionService'
 
 function SessionDetail() {
     const { detailMovieData: movieData } = useMovieContext()
@@ -20,12 +22,18 @@ function SessionDetail() {
     const bookingContext = useBookingContext()
     const [isPreviewMode, setIsPreviewMode] = React.useState(true)
 
+    const { data: occupiedSeats } = useQuery<any>({
+        queryKey: ['getOccupiedSeats', sessionData?.id],
+        queryFn: () =>
+            getOccupiedSeats(sessionData?.id),
+    })
+
     return (
         <>
             <AppHeader
                 config={{
-                    title: sessionData?.cinema_name,
-                    subtitle: movieData?.title
+                    title: sessionData?.cinema_name || sessionData?.cinema?.cinema_name || "Cinema",
+                    subtitle: movieData?.title || "Movie"
                 }}
                 rightIcon={
                     isPreviewMode ? (
@@ -41,13 +49,13 @@ function SessionDetail() {
                 <div className="border border-light-border-color py-2 rounded-lg w-5/12">
                     <div className="flex items-center justify-center">
                         <Calendar />
-                        <Typography>{dayjs().format('MMM, DD')}</Typography>
+                        <Typography>{dayjs(sessionData?.date || Date.now()).format('MMM, DD')}</Typography>
                     </div>
                 </div>
                 <div className='border border-light-border-color py-2 rounded-lg w-5/12'>
                     <div className="flex items-center justify-center">
                         <Clock />
-                        <Typography>15:10</Typography>
+                        <Typography>{sessionData?.time}</Typography>
                     </div>
                 </div>
             </div>
@@ -100,6 +108,8 @@ function SessionDetail() {
                     bookingContext.setSelectedSeats(places);
                 }}
                 isPreviewMode={isPreviewMode}
+                capacity={sessionData?.cinema?.cinema_capacity}
+                occupiedPlaces={occupiedSeats}
             />
 
 

@@ -4,12 +4,14 @@ import Typography from "../Typography";
 import { Mark } from "../Icon";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBookingContext } from "@/app/context/BookingContext";
+import { PartialSession, PartialSessionGroupedByCinema } from "@/app/interfaces/Session";
+import { convertPricesToObject } from "@/app/utils/helper";
 
 function SessionTable({
     sessionList,
     isGroupedByCinema
 }: {
-    sessionList: any[],
+    sessionList: PartialSessionGroupedByCinema[],
     isGroupedByCinema: boolean
 }) {
     const searchParam = useSearchParams()
@@ -17,7 +19,7 @@ function SessionTable({
     const router = useRouter()
     const bookingContext = useBookingContext()
 
-    const onSelectSession = (sessionData: any) => {
+    const onSelectSession = (sessionData: PartialSession) => {
         bookingContext.setSessionData(sessionData)
         router.push(`sessions/${sessionData.id}?${params.toString()}`);
     }
@@ -42,13 +44,13 @@ function SessionTable({
                         <>
                             <CinemaRow cinemaData={movieOrCinema} />
                             {
-                                movieOrCinema.sessionList.map((sessionData: any) => (
+                                movieOrCinema?.sessions?.map((sessionData: any) => (
                                     <SessionRow sessionData={sessionData} onSelectSession={onSelectSession} />
                                 ))
                             }
                         </>
                     ) : (
-                        <SessionRow sessionData={movieOrCinema} onSelectSession={onSelectSession} />
+                        <SessionRow sessionData={movieOrCinema as PartialSession} onSelectSession={onSelectSession} />
                     )
                 ))
             )}
@@ -61,7 +63,7 @@ function CinemaRow({ cinemaData }: { cinemaData: any }) {
         <List.Item className="w-full flex justify-between px-4 py-3 mt-0 border-b-2 border-b-border-color">
             <div>
                 <Typography component="p" className="text-lg font-bold">{cinemaData.cinema_name}</Typography>
-                <Typography component="span" className="text-sm text-text-secondary-color">${cinemaData.cinemaAddress}</Typography>
+                <Typography component="span" className="text-sm text-text-secondary-color">{cinemaData.cinema_address}</Typography>
             </div>
             <div>
                 <Typography component="p" className="text-sm text-text-secondary-color flex items-center gap-1">
@@ -73,7 +75,8 @@ function CinemaRow({ cinemaData }: { cinemaData: any }) {
     )
 }
 
-function SessionRow({ sessionData, onSelectSession }: { sessionData: any, onSelectSession: any }) {
+function SessionRow({ sessionData, onSelectSession }: { sessionData: PartialSession, onSelectSession: any }) {
+    const priceData = convertPricesToObject(sessionData?.price || [])
     return (
         <List.Item
             className="flex items-center border-b-2 border-b-border-color p-4 cursor-pointer"
@@ -81,24 +84,24 @@ function SessionRow({ sessionData, onSelectSession }: { sessionData: any, onSele
         >
             <div className="w-1/4">
                 <Typography component="p" className="text-lg font-bold text-center">
-                    {sessionData.time}
+                    {sessionData?.time || "00:00"}
                 </Typography>
                 <Typography component="p" className="text-sm font-medium text-text-secondary-color text-center">
-                    {sessionData.roomType}
+                    {sessionData?.cinema?.cinema_type}
                 </Typography>
             </div>
             <hr className="rotate-90 w-10 bg-border-color mx-1" />
             <div className="w-1/6">
-                <TicketPrice price={sessionData.adult} />
+                <TicketPrice price={priceData.adult} />
             </div>
             <div className="w-1/6">
-                <TicketPrice price={sessionData.child} />
+                <TicketPrice price={priceData.child} />
             </div>
             <div className="w-1/6">
-                <TicketPrice price={sessionData.student} />
+                <TicketPrice price={priceData.student} />
             </div>
             <div className="w-1/6">
-                <TicketPrice price={sessionData.vip} />
+                <TicketPrice price={priceData.vip} />
             </div>
         </List.Item>
     )

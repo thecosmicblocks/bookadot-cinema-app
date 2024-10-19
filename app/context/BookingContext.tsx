@@ -4,21 +4,21 @@ import { ReactNode, createContext, useCallback, useContext, useState } from "rea
 
 type BookingContextType = {
     sessionData: Record<string, any> | undefined;
-    setSessionData: (data: Record<string, any>) => void;
+    setSessionData: (data: Record<string, any> | undefined) => void;
     selectedSeats: Array<number>;
     setSelectedSeats: (seats: Array<number>) => void;
 };
 
 const BookingContext = createContext<BookingContextType>({
     sessionData: undefined,
-    setSessionData: () => {},
+    setSessionData: () => { },
     selectedSeats: [],
-    setSelectedSeats: () => {}
+    setSelectedSeats: () => { }
 });
 
 export function BookingContextProvider({ children }: Readonly<{ children: ReactNode }>) {
-    const [sessionData, setGlobalSessionData] = useState<Record<string, any>>();
-    const setSessionData = useCallback((data: Record<string, any>) => setGlobalSessionData(data), [])
+    const [sessionData, setGlobalSessionData] = useState<undefined | Record<string, any>>(undefined);
+    const setSessionData = useCallback((data: Record<string, any> | undefined) => setGlobalSessionData(data), [])
     const [selectedSeats, setGlobalSelectedSeats] = useState<Array<number>>([]);
     const setSelectedSeats = useCallback((seats: Array<number>) => setGlobalSelectedSeats(seats), [])
 
