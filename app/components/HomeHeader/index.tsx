@@ -1,8 +1,8 @@
 import { Button, Navbar } from "flowbite-react";
-import { Logo } from "../Icon";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { shortenWalletAddress } from "@/app/utils/helper";
+import Image from "next/image";
 
 export const HomeHeader = () => {
     const { open } = useAppKit()
@@ -10,7 +10,12 @@ export const HomeHeader = () => {
     return (
         <Navbar fluid rounded>
             <Navbar.Brand href={process.env.NEXT_PUBLIC_SITE_URL!}>
-                <Logo />
+                <Image
+                    src={"/logo.jpeg"}
+                    width={65}
+                    height={65}
+                    alt="Bookadot"
+                />
             </Navbar.Brand>
             <div>
                 <Button
