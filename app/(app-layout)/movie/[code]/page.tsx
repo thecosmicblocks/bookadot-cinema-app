@@ -19,7 +19,7 @@ function Movie() {
     const param = useParams()
     const movieContext = useMovieContext()
     const playerRef = useRef<Player | null>(null);
-    const { data: _movieData } = useQuery<PartialMovie[]>({
+    const { isPending, data: _movieData } = useQuery<PartialMovie[]>({
         queryKey: ['getDetailMovie', param.code as string],
         queryFn: () =>
             getMovie(param.code as string),
@@ -46,6 +46,9 @@ function Movie() {
     const handleReady = useCallback((player: Player) => {
         playerRef.current = player;
     }, []);
+
+    if (isPending)
+        return <></>
 
     return (
         <>
